@@ -1,66 +1,40 @@
-
 module.exports = function toReadable (number) {
-    
-    let simpleNumbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-    let teensNumbers = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-    let dozensNumbers = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-    let hundreds = 'hundred';
-    
-    let i = 0;
-    
-    let humanNum = '';
-    
-    let a = '';
-    let aTempNum = 0;
-    let bTempNum = 0;
-    let b = '';
-    let ba = '';
-    let c = '';
-    
-    if(number === 0) {
-    return humanNum = simpleNumbers[0];
-    }
-    while(number !== 0) {
-    debugger;
-      let n = number % 10;
-      if(i === 0) {   	
-          aTempNum = n;
-          a = a + simpleNumbers[n];
-      } else if(i === 1) {
-          bTempNum = n;
-          if(n === 1) {
-            ba = ba + teensNumbers[aTempNum];
-        } else if(aTempNum === 0 && n !==0) {
-            ba = ba + dozensNumbers[n-2];
-        } else if(n === 0) {
-            b = b;
-        }
-        else {
-            b = b + dozensNumbers[n-2];
-        } 
-      } else if(i === 2) {
-          c = simpleNumbers[n] + ' ' + hundreds;
-      }
-      
-      number = (number - n)/10;
-      i+=1;
-    }  
-    
-    if(ba){
-      return humanNum = c ? c + ' ' + ba : ba;
-    } else {
-    
-      if(c) {
-      
-          if(aTempNum === 0 && bTempNum === 0) {
-            return humanNum = c;
-        } else {
-              return humanNum = b ?  c + ' ' + b + ' ' + a : c + ' ' + b + a;
-        }
-      } else if(b) {
-          return humanNum = b + ' ' + a;
-      }  else {
-          return humanNum = a;
-      }
-    }
-  }
+  const arr = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const arrDozens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  
+  if (number < 20) {    // 2 3 4 5
+    const word = arr[number];
+    return word;
+} else if (number >= 20 && number < 100 && (number.toString()[1]) < 1) {   //20 30 40 50
+    const dozen = arrDozens[number.toString()[0]];
+    return (dozen);
+} else if (number >= 20 && number < 100) {     // 34 56 89
+    const dozen = arrDozens[number.toString()[0]];
+    const unit = arr[number.toString()[1]]; 
+    return (dozen + ' ' + unit);
+} else if ( (number > 99 && number.toString()[1]) < 1 && (number.toString()[2]) < 1) {   //100 200 300
+    const hundred = arr[number.toString()[0]];
+    return (hundred + ' hundred');
+} else if ( number.toString()[1] == 1 && number.toString()[2] == 0) {
+    const hundred = arr[number.toString()[0]];               // 110 210 310
+    const hundredRest = arr[number.toString().slice(1)];
+    return (hundred + ' ' + 'hundred' + ' ' + hundredRest);
+} else if ( number > 99 && (number.toString()[1]) > 1 && (number.toString()[2]) >= 1) { //344 567 789
+    const hundred = arr[number.toString()[0]];
+    const dozen = arrDozens[number.toString()[1]];
+    const unit = arr[number.toString()[2]];
+    return (hundred + ' ' + 'hundred' + ' ' + dozen + ' ' + unit);
+} else if ( number > 99 && (number.toString()[1]) < 1) {    // 506 304 202
+    const hundred = arr[number.toString()[0]];
+    const unit = arr[number.toString()[2]];
+    return (hundred + ' ' + 'hundred' + ' ' + unit);
+} else if ( number > 99 && (number.toString()[2]) < 1) {    // 560 350 770
+    const hundred = arr[number.toString()[0]];
+    const dozen = arrDozens[number.toString()[1]];
+    return (hundred + ' ' + 'hundred' + ' ' + dozen);
+} else if ( number > 99) {
+    const hundred = arr[number.toString()[0]];               // 215 316 211
+    const hundredRest = arr[number.toString().slice(1)];
+    return (hundred + ' ' + 'hundred' + ' ' + hundredRest);
+}    
+};
